@@ -1,15 +1,18 @@
 package com.aaron.service
 
-import com.aaron.pojo.Auth
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.redis.core.ReactiveRedisTemplate
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
 
 /**
  * Created by Aaron Sheng on 2018/6/12.
  */
 @Service
-class AuthService @Autowired constructor() {
-    fun getAuth(id: Long): Auth {
-        return Auth(id)
+class AuthService @Autowired constructor(
+    private val reactiveRedisTemplate: ReactiveRedisTemplate<String, String>
+) {
+    fun getAuth(id: String): Mono<String> {
+        return reactiveRedisTemplate.opsForValue().get(id)
     }
 }

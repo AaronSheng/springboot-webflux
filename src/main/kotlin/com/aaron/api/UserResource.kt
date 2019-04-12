@@ -1,27 +1,33 @@
 package com.aaron.api
 
-import com.aaron.pojo.Result
-import com.aaron.pojo.User
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
-import javax.ws.rs.*
-import javax.ws.rs.core.MediaType
+import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Mono
 
 /**
  * Created by Aaron Sheng on 2018/6/12.
  */
 @Api(tags = ["USER_USER"], description = "用户-用户信息")
-@Path("/users")
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
+@RequestMapping("/users")
 interface UserResource {
     @ApiOperation("获取信息")
-    @Path("/{userId}")
-    @GET
+    @GetMapping("/{userId}")
     fun get(
         @ApiParam(value = "用户ID", required = true)
-        @PathParam("userId")
-        userId: Long
-    ): Result<User>
+        @PathVariable("userId")
+        userId: String
+    ): Mono<String>
+
+    @ApiOperation("获取信息")
+    @PostMapping("/{userId}")
+    fun create(
+        @ApiParam(value = "用户ID", required = true)
+        @PathVariable("userId")
+        userId: String,
+        @ApiParam(value = "用户名称", required = true)
+        @RequestParam("name")
+        name: String
+    ): Mono<Boolean>
 }

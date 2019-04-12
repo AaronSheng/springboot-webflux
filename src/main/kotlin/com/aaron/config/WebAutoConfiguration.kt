@@ -12,10 +12,6 @@ import org.springframework.core.Ordered
 /**
  * Created by Aaron Sheng on 2018/6/12.
  */
-@Configuration
-@ConditionalOnWebApplication
-@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
-@AutoConfigureBefore(JerseyAutoConfiguration::class)
 class WebAutoConfiguration{
     @Bean
     @Profile("!prod")

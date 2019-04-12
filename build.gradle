@@ -7,15 +7,14 @@ buildscript {
         gradleShadowVersion = "2.0.2"
         gradleJooqVersion = "2.0.7"
         gradleDependencyVersion = "1.0.4.RELEASE"
-        springBootVersion = "1.5.11.RELEASE"
-        springConsulVersion = "1.3.0.RELEASE"
+        springBootVersion = "2.1.3.RELEASE"
+        apacheCommonVersion = "2.6.1"
         swaggerVersion = "1.5.17"
         jaxrsVersion = "2.0"
         jacksonVersion = "2.9.2"
         esVersion = "5.5.2"
         hashidsVersion = "1.0.3"
         feignVersion = "9.5.1"
-        svnkitVersion = "1.9.0"
         okHttpVersion = "3.9.1"
         commonExecVersion = "1.3"
         bouncyCastleVersion = "1.46"
@@ -31,6 +30,7 @@ buildscript {
     }
 
     repositories {
+        maven {url "http://mirrors.devops.oa.com/maven/"}
         mavenLocal()
         mavenCentral()
         jcenter()
@@ -56,7 +56,7 @@ apply plugin: "org.springframework.boot"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-task copyToRelease(type: Copy, dependsOn: bootRepackage) {
+task copyToRelease(type: Copy, dependsOn: build) {
     from("build/libs") {
         include("**/*.jar")
     }
@@ -66,14 +66,21 @@ task copyToRelease(type: Copy, dependsOn: bootRepackage) {
 build.dependsOn copyToRelease
 
 repositories {
+    maven {url "http://mirrors.devops.oa.com/maven/"}
     mavenLocal()
     mavenCentral()
     jcenter()
 }
 
+configurations {
+    all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+}
+
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-aop'
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile "org.springframework.boot:spring-boot-starter-webflux"
+    compile "org.springframework.boot:spring-boot-starter-reactor-netty"
+    compile "org.springframework.boot:spring-boot-starter-aop"
+    compile "org.springframework.boot:spring-boot-starter-data-redis-reactive"
     compile "org.springframework.boot:spring-boot-starter-jersey"
     compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
@@ -81,6 +88,7 @@ dependencies {
     compile "javax.ws.rs:javax.ws.rs-api:$jaxrsVersion"
     compile "io.swagger:swagger-jersey2-jaxrs:$swaggerVersion"
 
+    compile "org.apache.commons:commons-pool2:$apacheCommonVersion"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-core:$jacksonVersion"
     compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
