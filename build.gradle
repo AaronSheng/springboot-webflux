@@ -12,7 +12,6 @@ buildscript {
         swaggerVersion = "1.5.17"
         jaxrsVersion = "2.0"
         jacksonVersion = "2.9.2"
-        esVersion = "5.5.2"
         hashidsVersion = "1.0.3"
         feignVersion = "9.5.1"
         okHttpVersion = "3.9.1"
@@ -21,16 +20,11 @@ buildscript {
         dom4jVersion = "1.6.1"
         slf4jVersion = "1.7.25"
         mockitoVersion = "1.10.19"
-        httpclientVersion = "4.3.6"
         compressVersion = "1.15"
         jsonLibVersion = "2.4"
-        commonLang3Version = "3.5"
-        guavaVersion = "21.0"
-        cronutilsVersion = "7.0.1"
     }
 
     repositories {
-        maven {url "http://mirrors.devops.oa.com/maven/"}
         mavenLocal()
         mavenCentral()
         jcenter()
@@ -66,7 +60,6 @@ task copyToRelease(type: Copy, dependsOn: build) {
 build.dependsOn copyToRelease
 
 repositories {
-    maven {url "http://mirrors.devops.oa.com/maven/"}
     mavenLocal()
     mavenCentral()
     jcenter()
