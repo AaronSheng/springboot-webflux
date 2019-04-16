@@ -50,7 +50,7 @@ apply plugin: "org.springframework.boot"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-task copyToRelease(type: Copy, dependsOn: build) {
+task copyToRelease(type: Copy, dependsOn: bootJar) {
     from("build/libs") {
         include("**/*.jar")
     }
